@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2f5d8a">
+  <meta name="description" content="PromptMe: daily study prompts, wellbeing check-ins and rights for coaching students in Maharashtra.">
+  <title>PromptMe Coaching</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">✦</span>
+      <div>
+        <h1>PromptMe</h1>
+        <p class="tag">Study smart. Rest well. Know your rights.</p>
+      </div>
+    </div>
+    <a class="help-btn" href="#help" data-tab="help">Need help now?</a>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="today" aria-selected="true">Today</button>
+    <button role="tab" data-tab="study">Study</button>
+    <button role="tab" data-tab="calm">Calm</button>
+    <button role="tab" data-tab="rights">Rights</button>
+    <button role="tab" data-tab="centre">For centres</button>
+    <button role="tab" data-tab="help">Help</button>
+  </nav>
+
+  <main>
+    <!-- TODAY -->
+    <section id="today" class="panel" role="tabpanel">
+      <div class="card prompt-card">
+        <p class="eyebrow">Prompt of the day</p>
+        <p id="pod" class="big"></p>
+      </div>
+
+      <form id="checkin" class="card">
+        <h2>Daily check-in</h2>
+        <p class="muted">Takes 30 seconds. Stays on this device only.</p>
+
+        <label>How's your mood? <output id="moodOut">3</output>/5
+          <input type="range" name="mood" min="1" max="5" value="3">
+        </label>
+        <label>Stress level? <output id="stressOut">3</output>/5
+          <input type="range" name="stress" min="1" max="5" value="3">
+        </label>
+        <div class="row">
+          <label>Sleep last night (hrs)
+            <input type="number" name="sleepHours" min="0" max="16" step="0.5" value="7" required>
+          </label>
+          <label>Coaching class hours today
+            <input type="number" name="classHours" min="0" max="16" step="0.5" value="4" required>
+          </label>
+        </div>
+        <label>Anything on your mind? (optional)
+          <textarea name="note" rows="3" placeholder="Write freely. Only you can see this."></textarea>
+        </label>
+        <button type="submit" class="primary">Check in</button>
+      </form>
+
+      <div id="result" class="card hidden" aria-live="polite"></div>
+
+      <div class="card">
+        <h2>Your week</h2>
+        <div id="week" class="week"></div>
+        <p id="weekNote" class="muted"></p>
+      </div>
+    </section>
+
+    <!-- STUDY -->
+    <section id="study" class="panel hidden" role="tabpanel">
+      <div class="card">
+        <h2>Focus timer</h2>
+        <p class="muted">25 minutes focus, 5 minutes break. After 4 rounds, take a long break.</p>
+        <div id="timer" class="timer">25:00</div>
+        <p id="timerMode" class="center muted">Focus</p>
+        <div class="center">
+          <button id="timerStart" class="primary">Start</button>
+          <button id="timerReset">Reset</button>
+        </div>
+        <p id="rounds" class="center muted">Rounds today: 0</p>
+      </div>
+      <div class="card">
+        <h2>Study prompts</h2>
+        <ul id="studyList" class="prompts"></ul>
+        <button data-shuffle="study">Give me another</button>
+      </div>
+      <div class="card">
+        <h2>Reflect</h2>
+        <ul id="reflectList" class="prompts"></ul>
+        <button data-shuffle="reflect">Another reflection</button>
+      </div>
+    </section>
+
+    <!-- CALM -->
+    <section id="calm" class="panel hidden" role="tabpanel">
+      <div class="card center">
+        <h2>Breathe with me</h2>
+        <div id="breath" class="breath" aria-hidden="true"></div>
+        <p id="breathText" class="big">Tap start</p>
+        <button id="breathBtn" class="primary">Start</button>
+      </div>
+      <div class="card">
+        <h2>Quick resets</h2>
+        <ul id="calmList" class="prompts"></ul>
+      </div>
+    </section>
+
+    <!-- RIGHTS -->
+    <section id="rights" class="panel hidden" role="tabpanel">
+      <div class="card notice">
+        <p class="eyebrow">Status · reviewed <span id="regReviewed"></span></p>
+        <p id="regStatus"></p>
+      </div>
+      <div class="card">
+        <h2 id="scTitle"></h2>
+        <p class="pill ok" id="scStatus"></p>
+        <ul id="scPoints"></ul>
+      </div>
+      <div class="card">
+        <h2 id="mhTitle"></h2>
+        <p class="muted" id="mhPublished"></p>
+        <ol id="mhTimeline" class="timeline"></ol>
+        <dl id="mhProvisions" class="provisions"></dl>
+        <p class="muted" id="mhDebate"></p>
+      </div>
+      <p class="muted small">Summaries for awareness only, not legal advice. Check the official Maharashtra government notification for final text.</p>
+    </section>
+
+    <!-- CENTRE -->
+    <section id="centre" class="panel hidden" role="tabpanel">
+      <div class="card">
+        <h2>Coaching centre readiness checklist</h2>
+        <p class="muted">For owners and staff. Tick what you already do. Saved on this device.</p>
+        <div class="meter"><div id="meterBar"></div></div>
+        <p id="meterText" class="center"></p>
+        <ul id="checklist" class="checklist"></ul>
+      </div>
+    </section>
+
+    <!-- HELP -->
+    <section id="help" class="panel hidden" role="tabpanel">
+      <div class="card crisis">
+        <h2>You matter. Help is one call away.</h2>
+        <div id="helplines"></div>
+        <p>If things feel too much, tell a parent, teacher, warden or your centre's counsellor today. Asking for help is a strong thing to do.</p>
+      </div>
+      <div class="card">
+        <h2>Warning signs to watch in a friend</h2>
+        <ul>
+          <li>Talking about being a burden, hopeless or wanting to disappear</li>
+          <li>Withdrawing from friends, skipping meals or sleep</li>
+          <li>Giving away belongings or saying goodbye</li>
+          <li>Sudden calm after a long low period</li>
+        </ul>
+        <p><strong>What to do:</strong> ask directly and kindly, listen without judging, stay with them, and connect them to 14416 or a trusted adult.</p>
+      </div>
+      <div class="card">
+        <h2>Your data</h2>
+        <p class="muted">Everything stays in this browser. No account, no server.</p>
+        <button id="wipe">Delete all my data</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="muted small center">
+    PromptMe is a self-help tool, not a replacement for professional care.
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
