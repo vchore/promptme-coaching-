@@ -1,0 +1,8 @@
+{
+  "appId": "in.promptme.coaching",
+  "appName": "PromptMe",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#f6f7fb"
+  }
+}

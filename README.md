@@ -41,6 +41,27 @@ sw.js                 offline cache
 tests/logic.test.js   node:test suite
 ```
 
+## Android app
+
+The `android/` folder is a [Capacitor](https://capacitorjs.com/) project that wraps the same web app. Package id: `in.promptme.coaching`.
+
+**Get the APK without installing anything:**
+1. Every push runs **Actions → Android APK** on GitHub.
+2. Open the latest green run and download **PromptMe-apk** under *Artifacts*. It downloads as a zip.
+3. Unzip it, copy `app-debug.apk` to the phone and open it. Allow "Install unknown apps" when Android asks.
+
+**Build locally** (needs Node 22+, JDK 21 and the Android SDK / Android Studio):
+```bash
+npm install
+npm run android:sync      # copy web files into android/
+npx cap open android      # open in Android Studio, then Run ▶
+# or: cd android && ./gradlew assembleDebug
+```
+
+After editing anything in `index.html`, `css/` or `js/`, run `npm run android:sync` again.
+
+For the Play Store you need a signed release build (`./gradlew bundleRelease` with your own keystore) and a Google Play developer account.
+
 ## Regulatory research (as of 26 Sep 2026)
 
 ### 1. Draft Maharashtra Private Coaching Centres (Registration & Regulation) Act, 2026: **not yet law**

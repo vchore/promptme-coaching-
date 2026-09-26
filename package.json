@@ -6,6 +6,15 @@
   "description": "Study prompts, wellbeing check-ins and regulation awareness for coaching students in Maharashtra.",
   "scripts": {
     "start": "python3 -m http.server 8080",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "build:web": "node scripts/build-web.js",
+    "android:sync": "npm run build:web && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2"
   }
 }

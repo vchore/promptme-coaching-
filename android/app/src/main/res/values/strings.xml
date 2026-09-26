@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PromptMe</string>
+    <string name="title_activity_main">PromptMe</string>
+    <string name="package_name">in.promptme.coaching</string>
+    <string name="custom_url_scheme">in.promptme.coaching</string>
+</resources>
