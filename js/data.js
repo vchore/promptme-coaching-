@@ -112,3 +112,43 @@ export const PROMPTS = {
     "Your rank is not your worth. One test is one data point, not your future.",
   ],
 };
+
+// ---------- Profile options ----------
+export const STANDARDS = ["8th", "9th", "10th", "11th", "12th", "12th pass / dropper", "Graduate"];
+
+export const EXAMS = {
+  "JEE (Main/Advanced)": ["Physics", "Chemistry", "Mathematics"],
+  "NEET-UG": ["Physics", "Chemistry", "Biology"],
+  "MHT-CET": ["Physics", "Chemistry", "Mathematics", "Biology"],
+  "SSC / HSC Boards": ["Mathematics", "Science", "English", "Marathi", "Social Science"],
+  "Foundation / Olympiad": ["Mathematics", "Science", "Mental Ability"],
+  "MPSC / UPSC": ["History", "Geography", "Polity", "Economy", "Current Affairs", "CSAT"],
+  "Other": ["Subject 1", "Subject 2", "Subject 3"],
+};
+
+// ---------- Self-assessments ----------
+// PHQ-4 (Kroenke et al., 2009): free to use; a screening aid, not a diagnosis.
+export const PHQ4 = {
+  intro: "Over the last 2 weeks, how often have you been bothered by the following?",
+  options: ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+  items: [
+    { id: "a1", text: "Feeling nervous, anxious or on edge", scale: "anxiety" },
+    { id: "a2", text: "Not being able to stop or control worrying", scale: "anxiety" },
+    { id: "d1", text: "Little interest or pleasure in doing things", scale: "mood" },
+    { id: "d2", text: "Feeling down, depressed or hopeless", scale: "mood" },
+  ],
+};
+
+export const HABITS = {
+  options: ["Rarely", "Sometimes", "Usually"],
+  items: [
+    { id: "sleep", text: "I sleep 7 or more hours a night", tip: "Fix a lights-out time. Memory is consolidated during sleep." },
+    { id: "breaks", text: "I take a short break every 45–60 minutes", tip: "Use the focus timer; stand up and drink water in each break." },
+    { id: "revise", text: "I revise class notes within 24 hours", tip: "Spend 20 minutes each evening on that day's notes." },
+    { id: "phone", text: "My phone stays away while I study", tip: "Keep the phone in another room or on grayscale during focus time." },
+    { id: "plan", text: "I plan my day or week in advance", tip: "Set 3 goals each morning in the Plan tab." },
+    { id: "tests", text: "I practise with timed tests", tip: "Do one timed section per subject each week." },
+    { id: "doubts", text: "I clear doubts within a week", tip: "Note doubts in the Doubt diary and ask your teacher at the next class." },
+    { id: "move", text: "I do some physical activity every day", tip: "A 15-minute walk improves focus and mood." },
+  ],
+};

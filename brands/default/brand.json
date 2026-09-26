@@ -1,0 +1,10 @@
+{
+  "slug": "default",
+  "appId": "in.promptme.coaching",
+  "name": "PromptMe",
+  "shortName": "PromptMe",
+  "tagline": "Study smart. Rest well. Know your rights.",
+  "primary": "#2f5d8a",
+  "accent": "#2f5d8a",
+  "logo": "logo.svg"
+}

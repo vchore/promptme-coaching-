@@ -1,0 +1,28 @@
+{
+  "slug": "demo-academy",
+  "appId": "in.promptme.demoacademy",
+  "name": "Demo Academy",
+  "shortName": "Demo Academy",
+  "tagline": "JEE • NEET • MHT-CET coaching, Pune",
+  "primary": "#7a2e8f",
+  "accent": "#c2185b",
+  "logo": "logo.svg",
+  "city": "Pune",
+  "phone": "+91 90000 00000",
+  "whatsapp": "919000000000",
+  "email": "hello@demo-academy.example",
+  "website": "https://demo-academy.example",
+  "address": "2nd floor, Sample Building, FC Road, Pune 411004",
+  "counsellor": {
+    "name": "Ms. Counsellor (sample)",
+    "phone": "+91 90000 00001",
+    "hours": "Mon–Sat, 4–7 pm, Room 3"
+  },
+  "timings": "Classes 8:00 am – 1:00 pm (max 5 hrs/day)",
+  "weeklyOff": "Sunday",
+  "notices": [
+    { "date": "2026-10-05", "text": "Unit test 3 (Physics & Chemistry) on Monday. Syllabus on the notice board." },
+    { "date": "2026-10-02", "text": "Gandhi Jayanti holiday — no classes." },
+    { "date": "2026-09-28", "text": "Parent–teacher meet, Saturday 11 am." }
+  ]
+}

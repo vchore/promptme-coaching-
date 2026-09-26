@@ -5,8 +5,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  brands:
     runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install and test
+        run: |
+          npm ci
+          npm test
+      - id: list
+        name: List brands
+        run: echo "list=$(ls brands | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: brands
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        brand: ${{ fromJson(needs.brands.outputs.list) }}
+    name: APK (${{ matrix.brand }})
     steps:
       - uses: actions/checkout@v4
 
@@ -20,21 +44,19 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Install and test
-        run: |
-          npm ci
-          npm test
+      - run: npm ci
 
-      - name: Copy web app into Android project
-        run: npm run android:sync
+      - name: Apply ${{ matrix.brand }} branding
+        run: node scripts/brand-android.js ${{ matrix.brand }}
 
       - name: Build debug APK
         working-directory: android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon
+          mv app/build/outputs/apk/debug/app-debug.apk "app/build/outputs/apk/debug/${{ matrix.brand }}.apk"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: PromptMe-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: ${{ matrix.brand }}-apk
+          path: android/app/build/outputs/apk/debug/${{ matrix.brand }}.apk

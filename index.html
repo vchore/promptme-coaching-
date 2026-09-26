@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#2f5d8a">
-  <meta name="description" content="PromptMe: daily study prompts, wellbeing check-ins and rights for coaching students in Maharashtra.">
-  <title>PromptMe Coaching</title>
+  <meta name="description" content="Study prompts, self-assessment and wellbeing support for coaching students.">
+  <title>PromptMe</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
@@ -13,36 +13,88 @@
 <body>
   <header class="top">
     <div class="brand">
-      <span class="logo" aria-hidden="true">✦</span>
+      <span class="logo" id="brandLogo" aria-hidden="true"></span>
       <div>
-        <h1>PromptMe</h1>
-        <p class="tag">Study smart. Rest well. Know your rights.</p>
+        <h1 id="brandName">PromptMe</h1>
+        <p class="tag" id="brandTagline"></p>
       </div>
     </div>
-    <a class="help-btn" href="#help" data-tab="help">Need help now?</a>
+    <div class="top-actions">
+      <button class="avatar" id="avatarBtn" data-tab="profile" aria-label="My profile">?</button>
+      <a class="help-btn" href="#help" data-tab="help">Help now</a>
+    </div>
   </header>
 
   <nav class="tabs" role="tablist">
-    <button role="tab" data-tab="today" aria-selected="true">Today</button>
-    <button role="tab" data-tab="study">Study</button>
+    <button role="tab" data-tab="home" aria-selected="true">Home</button>
+    <button role="tab" data-tab="plan">Plan</button>
+    <button role="tab" data-tab="assess">Assess</button>
     <button role="tab" data-tab="calm">Calm</button>
+    <button role="tab" data-tab="centre">My centre</button>
     <button role="tab" data-tab="rights">Rights</button>
-    <button role="tab" data-tab="centre">For centres</button>
     <button role="tab" data-tab="help">Help</button>
   </nav>
 
   <main>
-    <!-- TODAY -->
-    <section id="today" class="panel" role="tabpanel">
+    <!-- PROFILE -->
+    <section id="profile" class="panel hidden" role="tabpanel">
+      <form id="profileForm" class="card">
+        <h2 id="profileTitle">My profile</h2>
+        <p class="muted">Saved only on this phone. Your centre cannot see it unless you share it.</p>
+        <label>Name <input name="name" required maxlength="60" autocomplete="name"></label>
+        <div class="row">
+          <label>Standard <select name="standard" id="standardSel"></select></label>
+          <label>Batch / roll no. (optional) <input name="batch" maxlength="30"></label>
+        </div>
+        <div class="row">
+          <label>Target exam <select name="exam" id="examSel"></select></label>
+          <label>Exam date (optional) <input type="date" name="examDate"></label>
+        </div>
+        <fieldset>
+          <legend>My subjects</legend>
+          <div id="subjectBoxes" class="chips"></div>
+          <label class="inline">Add another <input name="extraSubject" maxlength="30" placeholder="e.g. Computer Science"></label>
+        </fieldset>
+        <label>My goal / dream (optional) <input name="goal" maxlength="80" placeholder="e.g. Become a doctor and serve my village"></label>
+        <fieldset>
+          <legend>Trusted adult (for the Help screen)</legend>
+          <div class="row">
+            <label>Name <input name="trustedName" maxlength="40" placeholder="e.g. Aai / Baba / Mentor"></label>
+            <label>Phone <input name="trustedPhone" type="tel" maxlength="15" inputmode="tel"></label>
+          </div>
+        </fieldset>
+        <button type="submit" class="primary">Save profile</button>
+      </form>
+    </section>
+
+    <!-- HOME -->
+    <section id="home" class="panel hidden" role="tabpanel">
+      <div class="card hero">
+        <p class="eyebrow" id="greeting"></p>
+        <div class="hero-row">
+          <div>
+            <p class="big" id="goalLine"></p>
+            <p class="muted" id="examLine"></p>
+          </div>
+          <div class="countdown" id="countdown" hidden>
+            <strong id="countdownDays"></strong><span>days to go</span>
+          </div>
+        </div>
+      </div>
+
       <div class="card prompt-card">
         <p class="eyebrow">Prompt of the day</p>
         <p id="pod" class="big"></p>
       </div>
 
+      <div class="card" id="homeNotices" hidden>
+        <h2>From <span class="brand-name"></span></h2>
+        <ul id="homeNoticeList" class="notices"></ul>
+      </div>
+
       <form id="checkin" class="card">
         <h2>Daily check-in</h2>
         <p class="muted">Takes 30 seconds. Stays on this device only.</p>
-
         <label>How's your mood? <output id="moodOut">3</output>/5
           <input type="range" name="mood" min="1" max="5" value="3">
         </label>
@@ -58,7 +110,7 @@
           </label>
         </div>
         <label>Anything on your mind? (optional)
-          <textarea name="note" rows="3" placeholder="Write freely. Only you can see this."></textarea>
+          <textarea name="note" rows="3" placeholder="Write freely. This note is never saved."></textarea>
         </label>
         <button type="submit" class="primary">Check in</button>
       </form>
@@ -72,8 +124,21 @@
       </div>
     </section>
 
-    <!-- STUDY -->
-    <section id="study" class="panel hidden" role="tabpanel">
+    <!-- PLAN -->
+    <section id="plan" class="panel hidden" role="tabpanel">
+      <div class="card">
+        <div class="split">
+          <h2>Today's goals</h2>
+          <span class="pill ok" id="streak"></span>
+        </div>
+        <ul id="goalList" class="goals"></ul>
+        <form id="goalForm" class="add-row">
+          <input name="text" maxlength="80" placeholder="e.g. 20 NEET MCQs on Genetics" required>
+          <button class="primary">Add</button>
+        </form>
+        <p class="muted small">Tip: 3 small goals beat 10 big ones.</p>
+      </div>
+
       <div class="card">
         <h2>Focus timer</h2>
         <p class="muted">25 minutes focus, 5 minutes break. After 4 rounds, take a long break.</p>
@@ -85,15 +150,84 @@
         </div>
         <p id="rounds" class="center muted">Rounds today: 0</p>
       </div>
+
+      <div class="card">
+        <h2>Doubt diary</h2>
+        <p class="muted">Write a doubt when it comes up; ask your teacher at the next class.</p>
+        <form id="doubtForm" class="doubt-form">
+          <select name="subject" class="subject-select" aria-label="Subject"></select>
+          <input name="text" maxlength="160" placeholder="What confused you?" required>
+          <button class="primary">Save</button>
+        </form>
+        <ul id="doubtList" class="doubts"></ul>
+      </div>
+
       <div class="card">
         <h2>Study prompts</h2>
         <ul id="studyList" class="prompts"></ul>
         <button data-shuffle="study">Give me another</button>
       </div>
+    </section>
+
+    <!-- ASSESS -->
+    <section id="assess" class="panel hidden" role="tabpanel">
       <div class="card">
-        <h2>Reflect</h2>
-        <ul id="reflectList" class="prompts"></ul>
-        <button data-shuffle="reflect">Another reflection</button>
+        <h2>My test scores</h2>
+        <p class="muted">Compare only with your own past self. Ranks are not your worth.</p>
+        <form id="testForm" class="test-form">
+          <input name="name" maxlength="40" placeholder="Test name (e.g. Unit test 2)">
+          <select name="subject" class="subject-select" aria-label="Subject"></select>
+          <input name="score" type="number" step="0.5" min="0" placeholder="Marks" required aria-label="Marks scored">
+          <input name="max" type="number" step="1" min="1" placeholder="Out of" required aria-label="Maximum marks">
+          <input name="date" type="date" required aria-label="Test date">
+          <button class="primary">Add</button>
+        </form>
+        <div class="split">
+          <label class="inline">Show <select id="trendSubject"></select></label>
+          <span id="trendStats" class="muted"></span>
+        </div>
+        <div id="chart" class="chart" role="img"></div>
+        <details>
+          <summary>All tests (table)</summary>
+          <table class="table" id="testTable"></table>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>Topic confidence</h2>
+        <p class="muted">Rate each chapter 1–5. Focus on the reds first.</p>
+        <form id="topicForm" class="topic-form">
+          <select name="subject" class="subject-select" aria-label="Subject"></select>
+          <input name="topic" maxlength="50" placeholder="Chapter / topic" required>
+          <select name="rating" aria-label="Confidence">
+            <option value="1">1 · Lost</option><option value="2">2 · Shaky</option>
+            <option value="3" selected>3 · Okay</option><option value="4">4 · Good</option>
+            <option value="5">5 · Can teach it</option>
+          </select>
+          <button class="primary">Save</button>
+        </form>
+        <div id="topicSummary" class="topic-summary"></div>
+      </div>
+
+      <div class="card">
+        <h2>Study habits check</h2>
+        <form id="habitForm" class="quiz"></form>
+        <div id="habitResult" aria-live="polite"></div>
+      </div>
+
+      <div class="card">
+        <h2>Wellbeing check (PHQ-4)</h2>
+        <p class="muted">A 4-question screening used by doctors worldwide. It is not a diagnosis. Answers stay on this phone.</p>
+        <form id="phqForm" class="quiz"></form>
+        <div id="phqResult" aria-live="polite"></div>
+      </div>
+
+      <div class="card">
+        <h2>Share my progress</h2>
+        <p class="muted">Send a short summary to a parent or mentor. Nothing is sent unless you tap share.</p>
+        <pre id="reportPreview" class="report"></pre>
+        <button id="shareBtn" class="primary">Share</button>
+        <a id="waBtn" class="btn" target="_blank" rel="noopener">WhatsApp</a>
       </div>
     </section>
 
@@ -109,6 +243,42 @@
         <h2>Quick resets</h2>
         <ul id="calmList" class="prompts"></ul>
       </div>
+      <div class="card">
+        <h2>Reflect</h2>
+        <ul id="reflectList" class="prompts"></ul>
+        <button data-shuffle="reflect">Another reflection</button>
+      </div>
+    </section>
+
+    <!-- CENTRE -->
+    <section id="centre" class="panel hidden" role="tabpanel">
+      <div class="card centre-card">
+        <div class="centre-head">
+          <span class="logo big-logo" id="centreLogo" aria-hidden="true"></span>
+          <div>
+            <h2 class="brand-name"></h2>
+            <p class="muted" id="centreTagline"></p>
+          </div>
+        </div>
+        <dl id="centreInfo" class="provisions"></dl>
+        <div id="centreActions" class="actions"></div>
+      </div>
+      <div class="card" id="counsellorCard" hidden>
+        <h2>Talk to our counsellor</h2>
+        <p id="counsellorText"></p>
+        <a id="counsellorCall" class="btn primary">Call counsellor</a>
+      </div>
+      <div class="card" id="noticeCard" hidden>
+        <h2>Notices</h2>
+        <ul id="noticeList" class="notices"></ul>
+      </div>
+      <details class="card">
+        <summary><strong>For centre staff: readiness checklist</strong></summary>
+        <p class="muted">Tick what your centre already does. Saved on this device.</p>
+        <div class="meter"><div id="meterBar"></div></div>
+        <p id="meterText" class="center"></p>
+        <ul id="checklist" class="checklist"></ul>
+      </details>
     </section>
 
     <!-- RIGHTS -->
@@ -132,17 +302,6 @@
       <p class="muted small">Summaries for awareness only, not legal advice. Check the official Maharashtra government notification for final text.</p>
     </section>
 
-    <!-- CENTRE -->
-    <section id="centre" class="panel hidden" role="tabpanel">
-      <div class="card">
-        <h2>Coaching centre readiness checklist</h2>
-        <p class="muted">For owners and staff. Tick what you already do. Saved on this device.</p>
-        <div class="meter"><div id="meterBar"></div></div>
-        <p id="meterText" class="center"></p>
-        <ul id="checklist" class="checklist"></ul>
-      </div>
-    </section>
-
     <!-- HELP -->
     <section id="help" class="panel hidden" role="tabpanel">
       <div class="card crisis">
@@ -162,14 +321,15 @@
       </div>
       <div class="card">
         <h2>Your data</h2>
-        <p class="muted">Everything stays in this browser. No account, no server.</p>
+        <p class="muted">Everything stays on this phone. No account, no server.</p>
+        <button id="exportBtn">Download a backup</button>
         <button id="wipe">Delete all my data</button>
       </div>
     </section>
   </main>
 
   <footer class="muted small center">
-    PromptMe is a self-help tool, not a replacement for professional care.
+    <span class="brand-name"></span> · powered by PromptMe · a self-help tool, not a replacement for professional care.
   </footer>
 
   <script type="module" src="js/app.js"></script>
